@@ -1,24 +1,69 @@
-<apex:page showHeader="true" sidebar="true" tabStyle="Public_Metrics__tab" controller="PublicMetricsController">
-	<h1>Public Metrics</h1>
+<apex:page sidebar="false" showheader="false" standardStylesheets="false" docType="html-5.0" tabStyle="Public_Metrics__tab" controller="PublicMetricsController">
+<html lang="en">
+<head>
+	<meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description" content=""/>
+  <meta name="author" content=""/>
+  <title>Public Metrics</title>
 
-	<table>
-		<thead>
-			<tr>
-				<th>Label</th>
-				<th>Metric Name</th>
-				<th>Value</th>
-				<th>Unit</th>
-			</tr>
-		</thead>
-		<tbody>
+  <apex:stylesheet value="{!URLFOR($Resource.bootstrap, '/bootstrap/css/bootstrap.min.css')}" />
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"/>
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"/>
+  <!-- Theme style -->
+	<apex:stylesheet value="{!URLFOR($Resource.admin, '/admin/css/AdminLTE.min.css')}" />
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<h1>Public Metrics</h1>
+		</div>
+		<div class="row">
 			<apex:repeat value="{!metrics}" var="metric">
-					<tr>
-						<td>{!metric.Label__c}</td>
-						<td>{!metric.ShortName__c}</td>
-						<td>{!metric.Result__c}</td>
-						<td>{!metric.Unit__c}</td>
-					</tr>
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-green">
+            <div class="inner">
+              <h3>{!metric.result__c}</h3>
+
+              <p>{!metric.unit__c}</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-stats-bars"></i>
+            </div>
+            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
 			</apex:repeat>
-		</tbody>
-	</table>
+			</div>
+      <!-- /.row -->
+
+    <div class="row">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Label</th>
+						<th>Metric Name</th>
+						<th>Value</th>
+						<th>Unit</th>
+					</tr>
+				</thead>
+				<tbody>
+					<apex:repeat value="{!metrics}" var="metric">
+							<tr>
+								<td>{!metric.Label__c}</td>
+								<td>{!metric.ShortName__c}</td>
+								<td>{!metric.Result__c}</td>
+								<td>{!metric.Unit__c}</td>
+							</tr>
+						</apex:repeat>
+					</tbody>
+				</table>
+			</div>
+		</div>
+</body>
+</html>
 </apex:page>
