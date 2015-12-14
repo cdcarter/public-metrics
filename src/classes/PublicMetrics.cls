@@ -17,6 +17,9 @@ public with sharing class PublicMetrics {
 				if(pm.Type__c == 'rowcount')
 					PublicMetrics.metrics.add(PublicMetrics.getRecordCountResult(pm));
 			}
+			if (UserInfo.getUserType() == 'Standard') {
+				upsert PublicMetrics.metrics ShortName__c;
+			}
 			return PublicMetrics.metrics;
 		} else {
 			return PublicMetrics.metrics;
@@ -50,5 +53,9 @@ public with sharing class PublicMetrics {
 		}
 
 		return result;
+	}
+
+	public static List<Metric_Result__c> getCachedMetrics() {
+		return [SELECT ShortName__c,Result__c,Label__c,Unit__c FROM Metric_Result__c];
 	}
 }

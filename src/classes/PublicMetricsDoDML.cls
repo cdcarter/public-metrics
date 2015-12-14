@@ -1,12 +1,6 @@
 public with sharing class PublicMetricsDoDML {
-	public PublicMetricsDoDML() {
-	}
-
 	public PageReference doDML() {
-		if (UserInfo.getUserType() == 'Standard') {
-				List<Metric_Result__c> metrics = PublicMetrics.metrics;
-				upsert metrics ShortName__c;
-		}
+		List<Metric_Result__c> result = PublicMetrics.metrics;
 		return Page.PublicMetricsDashboard;
 	}
 }
