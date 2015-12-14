@@ -2,6 +2,8 @@
 
 Public Metrics creates public facing APIs and dashboards for key metrics tracked in Salesforce with a declarative and easy to set up process.
 
+See some [getting started materials](https://dl.dropboxusercontent.com/spa/q8pc7mthv83x9i1/public-metrics-basics/index.html).
+
 TODO:
 * support more than just rowcount
 * testing
@@ -10,3 +12,4 @@ TODO:
 * invocable method to recalculate Metrics
 * "see more" links on Metric_Result__c and Public_Metrics__mdt to inform the pretty dash
 * Class name style guide.
+* use report developer name instead of ID so that you can deploy the metadata and not change IDs
