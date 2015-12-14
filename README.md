@@ -9,3 +9,5 @@ TODO:
 * Fancier dashboard
 * See if PublicMetrics.metrics can determine if the caller is live or cached?
 * See if PublicMetrics can render the dashboard page after the action w/ changing the URL bar.
+* on-new-public-metric recalculation of metrics.
+* Class name style guide.
