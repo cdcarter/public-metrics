@@ -19,3 +19,5 @@ TODO:
 * how could this or a similar technique be used to display lists of objects (e.g. a member directory)
 * how to automate the sites setup
 * vf page for each metric result that shows report link (in this org) and current result and link to that metric in your api and maybe a quick configured wordpress plugin to add that value
+* allow just one metric to be selected by shortname via PublicMetrics class
+* visualforce component to display metrics in email templates (hopefully with some string formatting)
