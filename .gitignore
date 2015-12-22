@@ -3,3 +3,4 @@ debug/
 deploy/
 apex-scripts/
 *.sublime-*
+build.properties
