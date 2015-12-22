@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
+   <fullName>PublicMetrics</fullName>
     <types>
         <members>PublicMetrics</members>
         <members>PublicMetrics_Schedulable</members>
@@ -25,7 +26,7 @@
     </types>
     <types>
         <members>admin</members>
-        <members>bootstrao</members>
+        <members>bootstrap</members>
         <name>StaticResource</name>
     </types>
     <version>35.0</version>
