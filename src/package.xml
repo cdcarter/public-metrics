@@ -5,10 +5,10 @@
         <members>PublicMetrics</members>
         <members>PublicMetricsAPI</members>
         <members>PublicMetricsController</members>
-        <members>PublicMetricsDoDML</members>
         <members>PublicMetrics_Front_TEST</members>
         <members>PublicMetrics_Schedulable</members>
         <members>PublicMetrics_Schedulable_TEST</members>
+        <members>PublicMetrics_TEST</members>
         <name>ApexClass</name>
     </types>
     <types>
