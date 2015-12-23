@@ -28,4 +28,61 @@ If you are on a unix based system, the following commands should work:
 
     <!-- Load CumulusCI build targets -->
     <import file="${env.CUMULUSCI_PATH}/build/build.xml" />
+    <target name="deployPM">
+        <echo>============================================================================</echo>
+        <antcall target="preDeployCI" />
+
+        <!-- Create the unmanaged package if it doesn't already exist -->
+        <antcall target="createUnmanagedPackage" />
+
+        <!-- Uninstall all unpackaged code from the target org.  We have to do this first so we can uninstall and reinstall any managed packages not at the right version -->
+        <if>
+            <equals arg1="${cumulusci.unmanaged.destroy.mode}" arg2="full" />
+            <then>
+              <retrievePackaged dir="uninstallsrc" package="${cumulusci.package.name}" />
+              <buildPackagedDestructiveChanges srcdir="uninstallsrc" dir="uninstall" package="${cumulusci.package.name}" />
+              <echo>Uninstalling with purgeOnDelete=${cumulusci.destroy.purgeondelete}</echo>
+              <sf:deploy username="${sf.username}" password="${sf.password}" serverurl="${sf.serverurl}" deployRoot="uninstall" purgeOnDelete="${cumulusci.destroy.purgeondelete}" maxPoll="${cumulusci.maxPoll.notest}" />
+              <delete dir="uninstallsrc" />
+              <delete dir="uninstall" />
+            </then>
+            <else>
+                <!-- Attempt to destroy any stale metadata but continue even if this fails -->
+                <trycatch>
+                    <try>
+                        <antcall target="destroyStaleMetadata" />
+                    </try>
+                    <catch>
+                        <echo>First run of destroyStaleMetadata failed.  Ignoring for now but it may cause build failures in other targets.</echo>
+                    </catch>
+                </trycatch>
+            </else>
+        </if>
+
+        <!-- Update any managed packages which are not at the right version -->
+        <antcall target="updateRequiredPackages" />
+
+        <!-- Deploy any unpackaged metadata bundles needed before the deployment -->
+        <antcall target="deployUnpackagedPre" />
+
+        <!-- Deploy the src directory -->
+        <antcall target="deployWithoutTest" />
+
+        <if>
+            <not><equals arg1="${cumulusci.unmanaged.destroy.mode}" arg2="full" /></not>
+            <then>
+                <!-- Finally, delete any metadata from the org which is not in the repo -->
+                <antcall target="destroyStaleMetadata" />
+            </then>
+        </if>
+
+        <!-- Deploy any unpackaged metadata bundles needed after the deployment -->
+        <antcall target="deployUnpackagedPost" />
+
+        <!-- Run all tests -->
+        <antcall target="runAllTests" />
+
+        <antcall target="postDeployCI" />
+    </target>
+
 </project>
