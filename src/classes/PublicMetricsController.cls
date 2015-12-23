@@ -3,4 +3,8 @@ public with sharing class PublicMetricsController {
 	public PublicMetricsController() {
 		this.metrics = PublicMetrics.getCachedMetrics();
 	}
+	public PageReference doDML() {
+		List<Metric_Result__c> result = PublicMetrics.metrics;
+		return Page.PublicMetricsDashboard;
+	}
 }

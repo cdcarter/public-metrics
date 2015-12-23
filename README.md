@@ -7,7 +7,6 @@ See some [getting started materials](https://dl.dropboxusercontent.com/spa/q8pc7
 TODO:
 * testing
 * See if PublicMetrics.metrics can determine if the caller is live or cached?
-* See if PublicMetrics can render the dashboard page after the action w/ changing the URL bar.
 * invocable method to recalculate Metrics
 * "see more" links on Metric_Result__c and Public_Metrics__mdt to inform the pretty dash
 * Class name style guide.
