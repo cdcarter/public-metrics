@@ -35,6 +35,10 @@ If you are on a unix based system, the following commands should work:
         <!-- Create the unmanaged package if it doesn't already exist -->
         <antcall target="createUnmanagedPackage" />
 
+        <!-- deploy the pre-site package to delete references to pages -->
+        <antcall target="deployUnpackagedPre" />
+
+
         <!-- Uninstall all unpackaged code from the target org.  We have to do this first so we can uninstall and reinstall any managed packages not at the right version -->
         <if>
             <equals arg1="${cumulusci.unmanaged.destroy.mode}" arg2="full" />
@@ -61,9 +65,6 @@ If you are on a unix based system, the following commands should work:
 
         <!-- Update any managed packages which are not at the right version -->
         <antcall target="updateRequiredPackages" />
-
-        <!-- Deploy any unpackaged metadata bundles needed before the deployment -->
-        <antcall target="deployUnpackagedPre" />
 
         <!-- Deploy the src directory -->
         <antcall target="deployWithoutTest" />
