@@ -14,10 +14,10 @@ TODO:
 * Class name style guide.
 * URL Parameter filtering for public dashboard (think DDP)
 * allow just one metric to be requested by shortname in API
-* see if the API json can be prettier
-* how could this or a similar technique be used to display lists of objects (e.g. a member directory)
-* how to automate the sites setup
-* vf page for each metric result that shows report link (in this org) and current result and link to that metric in your api and maybe a quick configured wordpress plugin to add that value
 * allow just one metric to be selected by shortname via PublicMetrics class
+* see if the API json can be prettier
+* vf page for each metric result that shows report link (in this org) and current result and link to that metric in your api and maybe a quick configured wordpress plugin to add that value
 * visualforce component to display metrics in email templates (hopefully with some string formatting)
 * xslt transformy goodness in the buildscripts to inject site user and domain info
+* how to automate the sites setup
+* how could this or a similar technique be used to display lists of objects (e.g. a member directory)

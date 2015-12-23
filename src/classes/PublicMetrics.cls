@@ -12,10 +12,7 @@ public with sharing class PublicMetrics {
 		if (PublicMetrics.metrics == null) {
 			PublicMetrics.metrics = new List<Metric_Result__c>();
 			for(Public_Metrics__mdt pm : PublicMetrics.metric_records) {
-				// potentially here you could choose which method to call based
-				// on the summary name in the mdt record
-				if(pm.Type__c == 'rowcount')
-					PublicMetrics.metrics.add(PublicMetrics.getRecordCountResult(pm));
+					PublicMetrics.metrics.add(PublicMetrics.getResult(pm));
 			}
 			if (UserInfo.getUserType() == 'Standard') {
 				upsert PublicMetrics.metrics ShortName__c;
@@ -26,7 +23,7 @@ public with sharing class PublicMetrics {
 		}
 	} private set;}
 
-	public static Metric_Result__c getRecordCountResult(Public_Metrics__mdt pm) {
+	public static Metric_Result__c getResult(Public_Metrics__mdt pm) {
 		Metric_Result__c result = new Metric_Result__c(
 			Unit__c = pm.Unit__c,
 			ShortName__c = pm.ShortName__c,
@@ -35,7 +32,7 @@ public with sharing class PublicMetrics {
 			Last_Run__c = System.now()
 		);
 
-		Id reportId = [SELECT Id FROM Report WHERE DeveloperName =: pm.DeveloperName LIMIT 1][0].Id;
+		Id reportId = [SELECT Id FROM Report WHERE DeveloperName =: pm.Report__c LIMIT 1][0].Id;
 		Reports.ReportResults reportResults = Reports.ReportManager.runReport(reportId, true);
 		Reports.ReportFact fact = reportResults.getFactMap().get('T!T');
 		List<Reports.SummaryValue> aggregates = fact.getAggregates();
@@ -48,7 +45,7 @@ public with sharing class PublicMetrics {
 				System.debug(String.format('Label: {0}',new List<String>{sumVal.getLabel()}));
 				System.debug(String.format('Value: {0}',new List<String>{String.valueOf(sumVal.getValue())}));
 
-				if(aggColName == 'RowCount') {
+				if(aggColName == pm.Type__c) {
 					result.Result__c = String.valueOf(sumVal.getValue());
 				}
 		}

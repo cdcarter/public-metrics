@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>Public_Metrics.Public_Metric_Group_Hikes_This_Month</members>
+        <name>CustomMetadata</name>
+    </types>
+    <types>
+        <members>Public_Metrics</members>
+        <members>Public_Metrics/Public_Metric_Group_Hikes_This_Month</members>
+        <members>Public_Metrics/Public_Metrics_Hikers_this_Month</members>
+        <members>Public_Metrics/Public_Metrics_of_Trail_Cleanups</members>
+        <name>Report</name>
+    </types>
+    <version>35.0</version>
+</Package>
