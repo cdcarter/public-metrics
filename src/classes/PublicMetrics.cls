@@ -10,12 +10,14 @@ public with sharing class PublicMetrics {
 
 	public static List<Metric_Result__c> metrics { get {
 		if (PublicMetrics.metrics == null) {
-			PublicMetrics.metrics = new List<Metric_Result__c>();
-			for(Public_Metrics__mdt pm : PublicMetrics.metric_records) {
-					PublicMetrics.metrics.add(PublicMetrics.getResult(pm));
-			}
 			if (UserInfo.getUserType() == 'Standard') {
+				PublicMetrics.metrics = new List<Metric_Result__c>();
+				for(Public_Metrics__mdt pm : PublicMetrics.metric_records) {
+						PublicMetrics.metrics.add(PublicMetrics.getResult(pm));
+				}
 				upsert PublicMetrics.metrics ShortName__c;
+			} else {
+				PublicMetrics.metrics = getCachedMetrics();
 			}
 			return PublicMetrics.metrics;
 		} else {
