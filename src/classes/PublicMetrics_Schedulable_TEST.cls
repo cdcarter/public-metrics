@@ -1,7 +1,12 @@
 @isTest
 private class PublicMetrics_Schedulable_TEST {
    public static String CRON_EXP = '0 0 0 15 3 ? 2022';
-	 @isTest static void test_schedulableClass() {
+
+   // This method uses seeAllData and UnCached Results to let the
+   // scheduled class actually create Metric Results.
+   // Expecting an empty db.
+	 @isTest(seeAllData=true) static void test_schedulableClass() {
+     PublicMetrics_TEST.useCachedData = false;
 		 List<Metric_Result__c> ml = [SELECT Id FROM Metric_Result__c ];
 		 System.assertEquals(ml.size(),0);
 
@@ -13,5 +18,6 @@ private class PublicMetrics_Schedulable_TEST {
 		 ml = [SELECT Id FROM Metric_Result__c];
 		 List<Public_Metrics__mdt> pm = [SELECT Id FROM Public_Metrics__mdt];
 		 System.assertEquals(pm.size(),ml.size());
+     PublicMetrics_TEST.useCachedData = true;
 	 }
 }

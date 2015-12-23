@@ -10,7 +10,7 @@ public with sharing class PublicMetrics {
 
 	public static List<Metric_Result__c> metrics { get {
 		if (PublicMetrics.metrics == null) {
-			if (UserInfo.getUserType() == 'Standard' && !Test.isRunningTest()) {
+			if (UserInfo.getUserType() == 'Standard' && !PublicMetrics_TEST.useCachedData) {
 				PublicMetrics.metrics = new List<Metric_Result__c>();
 				for(Public_Metrics__mdt pm : PublicMetrics.metric_records) {
 						PublicMetrics.metrics.add(PublicMetrics.getResult(pm));
