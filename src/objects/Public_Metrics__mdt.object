@@ -14,6 +14,18 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Report__c</fullName>
+        <description>Developer Name for the report to calculate this metric from.</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>Developer Name for the report to calculate this metric from.</inlineHelpText>
+        <label>Report</label>
+        <length>255</length>
+        <required>true</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>ShortName__c</fullName>
         <caseSensitive>false</caseSensitive>
         <description>The json escaped name for the metric to be exposed as in the api.</description>

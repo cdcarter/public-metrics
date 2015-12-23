@@ -1,7 +1,7 @@
 public with sharing class PublicMetrics {
 	public static List<Public_Metrics__mdt> metric_records {get {
 		if (PublicMetrics.metric_records == null) {
-			PublicMetrics.metric_records = [SELECT Report_Id__c,ShortName__c,Type__c,Unit__c,DeveloperName,MasterLabel FROM Public_Metrics__mdt];
+			PublicMetrics.metric_records = [SELECT Report__c,ShortName__c,Type__c,Unit__c,DeveloperName,MasterLabel FROM Public_Metrics__mdt];
 			return PublicMetrics.metric_records;
 		} else {
 			return PublicMetrics.metric_records;
@@ -35,7 +35,8 @@ public with sharing class PublicMetrics {
 			Last_Run__c = System.now()
 		);
 
-		Reports.ReportResults reportResults = Reports.ReportManager.runReport(pm.Report_Id__c, true);
+		Id reportId = [SELECT Id FROM Report WHERE DeveloperName =: pm.DeveloperName LIMIT 1][0].Id;
+		Reports.ReportResults reportResults = Reports.ReportManager.runReport(reportId, true);
 		Reports.ReportFact fact = reportResults.getFactMap().get('T!T');
 		List<Reports.SummaryValue> aggregates = fact.getAggregates();
 

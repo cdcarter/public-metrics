@@ -6,6 +6,7 @@
         <members>PublicMetricsAPI</members>
         <members>PublicMetricsController</members>
         <members>PublicMetricsDoDML</members>
+        <members>PublicMetrics_Front_TEST</members>
         <members>PublicMetrics_Schedulable</members>
         <members>PublicMetrics_Schedulable_TEST</members>
         <name>ApexClass</name>
@@ -23,6 +24,7 @@
         <members>Metric_Result__c.Type__c</members>
         <members>Metric_Result__c.Unit__c</members>
         <members>Public_Metrics__mdt.Report_Id__c</members>
+        <members>Public_Metrics__mdt.Report__c</members>
         <members>Public_Metrics__mdt.ShortName__c</members>
         <members>Public_Metrics__mdt.Type__c</members>
         <members>Public_Metrics__mdt.Unit__c</members>
