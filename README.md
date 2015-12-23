@@ -5,7 +5,6 @@ Public Metrics creates public facing APIs and dashboards for key metrics tracked
 See some [getting started materials](https://dl.dropboxusercontent.com/spa/q8pc7mthv83x9i1/public-metrics-basics/index.html).
 
 TODO:
-* support more than just rowcount
 * testing
 * See if PublicMetrics.metrics can determine if the caller is live or cached?
 * See if PublicMetrics can render the dashboard page after the action w/ changing the URL bar.
