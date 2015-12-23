@@ -12,7 +12,6 @@ TODO:
 * invocable method to recalculate Metrics
 * "see more" links on Metric_Result__c and Public_Metrics__mdt to inform the pretty dash
 * Class name style guide.
-* use report developer name instead of ID so that you can deploy the metadata and not change IDs
 * URL Parameter filtering for public dashboard (think DDP)
 * allow just one metric to be requested by shortname in API
 * see if the API json can be prettier
@@ -21,3 +20,4 @@ TODO:
 * vf page for each metric result that shows report link (in this org) and current result and link to that metric in your api and maybe a quick configured wordpress plugin to add that value
 * allow just one metric to be selected by shortname via PublicMetrics class
 * visualforce component to display metrics in email templates (hopefully with some string formatting)
+* xslt transformy goodness in the buildscripts to inject site user and domain info
