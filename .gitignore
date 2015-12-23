@@ -4,3 +4,4 @@ deploy/
 apex-scripts/
 *.sublime-*
 build.properties
+*DS_Store*
