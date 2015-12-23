@@ -30,11 +30,6 @@ If you are on a unix based system, the following commands should work:
     <import file="${env.CUMULUSCI_PATH}/build/build.xml" />
     <target name="deployPM">
         <echo>============================================================================</echo>
-        <antcall target="preDeployCI" />
-
-        <!-- Create the unmanaged package if it doesn't already exist -->
-        <antcall target="createUnmanagedPackage" />
-
         <!-- deploy the pre-site package to delete references to pages -->
         <antcall target="deployUnpackagedPre" />
 
@@ -63,9 +58,6 @@ If you are on a unix based system, the following commands should work:
             </else>
         </if>
 
-        <!-- Update any managed packages which are not at the right version -->
-        <antcall target="updateRequiredPackages" />
-
         <!-- Deploy the src directory -->
         <antcall target="deployWithoutTest" />
 
@@ -82,8 +74,6 @@ If you are on a unix based system, the following commands should work:
 
         <!-- Run all tests -->
         <antcall target="runAllTests" />
-
-        <antcall target="postDeployCI" />
     </target>
 
 </project>
