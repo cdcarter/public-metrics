@@ -23,7 +23,6 @@
         <members>Metric_Result__c.ShortName__c</members>
         <members>Metric_Result__c.Type__c</members>
         <members>Metric_Result__c.Unit__c</members>
-        <members>Public_Metrics__mdt.Report_Id__c</members>
         <members>Public_Metrics__mdt.Report__c</members>
         <members>Public_Metrics__mdt.ShortName__c</members>
         <members>Public_Metrics__mdt.Type__c</members>
