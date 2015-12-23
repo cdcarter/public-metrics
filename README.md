@@ -5,7 +5,7 @@ Public Metrics creates public facing APIs and dashboards for key metrics tracked
 See some [getting started materials](https://dl.dropboxusercontent.com/spa/q8pc7mthv83x9i1/public-metrics-basics/index.html).
 
 TODO:
-* testing
+* testing -- honestly moving slowly on this for no real reason, just need to define test env and where we are seeing all data etc... to make the testing WORK.
 * invocable method to recalculate Metrics
 * "see more" links on Metric_Result__c and Public_Metrics__mdt to inform the pretty dash
 * Class name style guide.
