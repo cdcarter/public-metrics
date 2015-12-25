@@ -3,6 +3,9 @@
         PublicMetrics_TEST.useCachedData = true;
         Metric_Result__c mr = new Metric_Result__c(ShortName__c= 'test-test',Result__c='10',Type__c='rowcount',Label__c='test metric');
         insert mr;
+        RestRequest req = new RestRequest();
+        req.requestURI = '/metrics/';
+        RestContext.request = req;
         Test.startTest();
         List<Metric_Result__c> results = PublicMetricsAPI.getMetrics();
         Test.stopTest();
