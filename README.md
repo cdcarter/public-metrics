@@ -8,10 +8,8 @@ TODO:
 * testing -- honestly moving slowly on this for no real reason, just need to define test env and where we are seeing all data etc... to make the testing WORK.
 * invocable method to recalculate Metrics
 * "see more" links on Metric_Result__c and Public_Metrics__mdt to inform the pretty dash
-* Class name style guide.
 * URL Parameter filtering for public dashboard (think DDP)
 * allow just one metric to be requested by shortname in API
-* allow just one metric to be selected by shortname via PublicMetrics class
 * see if the API json can be prettier
 * vf page for each metric result that shows report link (in this org) and current result and link to that metric in your api and maybe a quick configured wordpress plugin to add that value
 * visualforce component to display metrics in email templates (hopefully with some string formatting)
