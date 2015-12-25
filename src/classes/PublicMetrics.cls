@@ -1,31 +1,45 @@
 public with sharing class PublicMetrics {
-	public static List<Public_Metrics__mdt> metric_records {get {
-		if (PublicMetrics.metric_records == null) {
-			PublicMetrics.metric_records = [SELECT Report__c,ShortName__c,Type__c,Unit__c,DeveloperName,MasterLabel FROM Public_Metrics__mdt];
-			return PublicMetrics.metric_records;
-		} else {
-			return PublicMetrics.metric_records;
-		}
-	} private set;}
+	public static Metric_Result__c getCachedMetric(String shortName) {
+		return PublicMetrics.getCachedMetrics(new List<String> {shortName})[0];
+	}
 
-	public static List<Metric_Result__c> metrics { get {
-		if (PublicMetrics.metrics == null) {
-			if (UserInfo.getUserType() == 'Standard' && !PublicMetrics_TEST.useCachedData) {
-				PublicMetrics.metrics = new List<Metric_Result__c>();
-				for(Public_Metrics__mdt pm : PublicMetrics.metric_records) {
-						PublicMetrics.metrics.add(PublicMetrics.getResult(pm));
-				}
-				upsert PublicMetrics.metrics ShortName__c;
-			} else {
-				PublicMetrics.metrics = getCachedMetrics();
+	public static List<Metric_Result__c> getCachedMetrics() {
+		return [SELECT ShortName__c,Result__c,Label__c,Unit__c FROM Metric_Result__c];
+	}
+
+	public static List<Metric_Result__c> getCachedMetrics(List<String> shortNames) {
+		return [SELECT ShortName__c,Result__c,Label__c,Unit__c
+						FROM Metric_Result__c
+						WHERE ShortName__c IN :shortNames];
+	}
+
+	public static List<Metric_Result__c> getMetrics(List<String> shortNames) {
+		if (UserInfo.getUserType() == 'Standard' && !PublicMetrics_TEST.useCachedData) {
+			List<Metric_Result__c> results = new List<Metric_Result__c>();
+			List<Public_Metrics__mdt> definitions = PublicMetrics.getMetricDefinitions(shortNames);
+			List<String> reportNames = new List<String>();
+			for(Public_Metrics__mdt pm : definitions) {
+				reportNames.add(pm.Report__c);
 			}
-			return PublicMetrics.metrics;
-		} else {
-			return PublicMetrics.metrics;
-		}
-	} private set;}
+			List<Report> reports = [SELECT Id,DeveloperName FROM Report WHERE DeveloperName IN :reportNames];
+			Map<String,Id> reportMapping = new Map<String,Id>();
+			for(Report rep : reports) {
+				reportMapping.put(rep.DeveloperName,rep.Id);
+			}
 
-	public static Metric_Result__c getResult(Public_Metrics__mdt pm) {
+			for(Public_Metrics__mdt pm : definitions) {
+				results.add(PublicMetrics.getMetric(pm,reportMapping.get(pm.Report__c)));
+			}
+
+			upsert results ShortName__c;
+
+			return results;
+		} else {
+			return PublicMetrics.getCachedMetrics(shortNames);
+		}
+	}
+
+	public static Metric_Result__c getMetric(Public_Metrics__mdt pm, Id reportId) {
 		Metric_Result__c result = new Metric_Result__c(
 			Unit__c = pm.Unit__c,
 			ShortName__c = pm.ShortName__c,
@@ -34,14 +48,13 @@ public with sharing class PublicMetrics {
 			Last_Run__c = System.now()
 		);
 
-		Id reportId = [SELECT Id FROM Report WHERE DeveloperName =: pm.Report__c LIMIT 1][0].Id;
 		Reports.ReportResults reportResults = Reports.ReportManager.runReport(reportId, true);
 		Reports.ReportFact fact = reportResults.getFactMap().get('T!T');
 		List<Reports.SummaryValue> aggregates = fact.getAggregates();
 
 		List<String> aggColNames = reportResults.getReportMetadata().getAggregates();
 		for (Integer i = 0, cnt = aggColNames.size(); i < cnt; i++) {
-    		String aggColName = aggColNames.get(i);
+				String aggColName = aggColNames.get(i);
 				Reports.SummaryValue sumVal = aggregates[i];
 				System.debug(String.format('Col Name: {0}',new List<String>{aggColName}));
 				System.debug(String.format('Label: {0}',new List<String>{sumVal.getLabel()}));
@@ -55,7 +68,22 @@ public with sharing class PublicMetrics {
 		return result;
 	}
 
-	public static List<Metric_Result__c> getCachedMetrics() {
-		return [SELECT ShortName__c,Result__c,Label__c,Unit__c FROM Metric_Result__c];
+	public static Metric_Result__c getMetric(String shortName) {
+		return PublicMetrics.getMetrics(new List<String>{shortName})[0];
+	}
+
+	public static Public_Metrics__mdt getMetricDefinition(String shortName) {
+		return PublicMetrics.getMetricDefinitions(new List<String>{shortName})[0];
+	}
+
+	public static List<Public_Metrics__mdt> getMetricDefinitions() {
+		return [SELECT Report__c,ShortName__c,Type__c,Unit__c,DeveloperName,MasterLabel
+						FROM Public_Metrics__mdt];
+	}
+
+	public static List<Public_Metrics__mdt> getMetricDefinitions(List<String> shortNames) {
+		return [SELECT Report__c,ShortName__c,Type__c,Unit__c,DeveloperName,MasterLabel
+						FROM Public_Metrics__mdt
+						WHERE ShortName__c IN :shortNames];
 	}
 }
