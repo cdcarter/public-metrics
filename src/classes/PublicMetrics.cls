@@ -15,7 +15,7 @@ public with sharing class PublicMetrics {
 
 	// this is inelegant and causes an unnecessary SOQL query. getMetrics(List<String>) will need refactoring
 	public static List<Metric_Result__c> getMetrics() {
-		if (UserInfo.getUserType() == 'Standard' && !PublicMetrics_TEST.useCachedData) {
+		if (shouldUseCachedData()) {
 			List<Public_Metrics__mdt> definitions = PublicMetrics.getMetricDefinitions();
 			List<String> shortNames = new List<String>();
 			for(Public_Metrics__mdt pm : definitions) {
@@ -29,7 +29,7 @@ public with sharing class PublicMetrics {
 
 	public static List<Metric_Result__c> getMetrics(List<String> shortNames) {
 		// need a more robust check here, perhaps it's own method.
-		if (UserInfo.getUserType() == 'Standard' && !PublicMetrics_TEST.useCachedData) {
+		if (shouldUseCachedData()) {
 			List<Metric_Result__c> results = new List<Metric_Result__c>();
 			List<Public_Metrics__mdt> definitions = PublicMetrics.getMetricDefinitions(shortNames);
 			List<String> reportNames = new List<String>();
@@ -100,5 +100,9 @@ public with sharing class PublicMetrics {
 		return [SELECT Report__c,ShortName__c,Type__c,Unit__c,DeveloperName,MasterLabel
 						FROM Public_Metrics__mdt
 						WHERE ShortName__c IN :shortNames];
+	}
+
+	private static boolean shouldUseCachedData() {
+		return (UserInfo.getUserType() == 'Standard' && !PublicMetrics_TEST.useCachedData);
 	}
 }
