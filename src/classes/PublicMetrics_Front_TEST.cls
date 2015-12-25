@@ -18,7 +18,7 @@
         insert mr;
         Test.startTest();
         PublicMetricsController cont = new PublicMetricsController();
-        List<Metric_Result__c> results = cont.metrics;
+        List<Metric_Result__c> results = cont.getMetrics();
         Test.stopTest();
         boolean passed = false;
         for(Metric_Result__c result : results) {
