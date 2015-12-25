@@ -28,7 +28,6 @@ public with sharing class PublicMetrics {
 	}
 
 	public static List<Metric_Result__c> getMetrics(List<String> shortNames) {
-		// need a more robust check here, perhaps it's own method.
 		if (shouldUseCachedData()) {
 			List<Metric_Result__c> results = new List<Metric_Result__c>();
 			List<Public_Metrics__mdt> definitions = PublicMetrics.getMetricDefinitions(shortNames);
@@ -63,7 +62,13 @@ public with sharing class PublicMetrics {
 			Last_Run__c = System.now()
 		);
 
-		Reports.ReportResults reportResults = Reports.ReportManager.runReport(reportId, true);
+		Reports.ReportResults reportResults;
+		try {
+			reportResults = Reports.ReportManager.runReport(reportId, true);
+		} catch(Exception e) {
+			throw new MetricReportException('Could not execute report for metric.',e);
+		}
+
 		Reports.ReportFact fact = reportResults.getFactMap().get('T!T');
 		List<Reports.SummaryValue> aggregates = fact.getAggregates();
 
@@ -84,11 +89,19 @@ public with sharing class PublicMetrics {
 	}
 
 	public static Metric_Result__c getMetric(String shortName) {
-		return PublicMetrics.getMetrics(new List<String>{shortName})[0];
+		try {
+			return PublicMetrics.getMetrics(new List<String>{shortName})[0];
+		} catch(Exception e) {
+			throw new MetricNotFoundException(String.format('Could not find metric named {0}.',new List<String>{shortName}),e);
+		}
 	}
 
 	public static Public_Metrics__mdt getMetricDefinition(String shortName) {
-		return PublicMetrics.getMetricDefinitions(new List<String>{shortName})[0];
+		try {
+			return PublicMetrics.getMetricDefinitions(new List<String>{shortName})[0];
+		} catch(Exception e) {
+			throw new MetricNotFoundException(String.format('Could not find metric named {0}.',new List<String>{shortName}),e);
+		}
 	}
 
 	public static List<Public_Metrics__mdt> getMetricDefinitions() {
@@ -105,4 +118,7 @@ public with sharing class PublicMetrics {
 	private static boolean shouldUseCachedData() {
 		return (UserInfo.getUserType() == 'Standard' && !PublicMetrics_TEST.useCachedData);
 	}
+
+	public class MetricReportException extends Exception {}
+	public class MetricNotFoundException extends Exception {}
 }
