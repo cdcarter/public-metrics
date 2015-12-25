@@ -15,12 +15,16 @@ public with sharing class PublicMetrics {
 
 	// this is inelegant and causes an unnecessary SOQL query. getMetrics(List<String>) will need refactoring
 	public static List<Metric_Result__c> getMetrics() {
-		List<Public_Metrics__mdt> definitions = PublicMetrics.getMetricDefinitions();
-		List<String> shortNames = new List<String>();
-		for(Public_Metrics__mdt pm : definitions) {
-			shortNames.add(pm.ShortName__c);
+		if (UserInfo.getUserType() == 'Standard' && !PublicMetrics_TEST.useCachedData) {
+			List<Public_Metrics__mdt> definitions = PublicMetrics.getMetricDefinitions();
+			List<String> shortNames = new List<String>();
+			for(Public_Metrics__mdt pm : definitions) {
+				shortNames.add(pm.ShortName__c);
+			}
+			return PublicMetrics.getMetrics(shortNames);
+		} else {
+			return PublicMetrics.getCachedMetrics();
 		}
-		return PublicMetrics.getMetrics(shortNames);
 	}
 
 	public static List<Metric_Result__c> getMetrics(List<String> shortNames) {

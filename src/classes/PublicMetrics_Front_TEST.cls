@@ -1,5 +1,6 @@
 @isTest public class PublicMetrics_Front_TEST {
     @istest public static void test_api() {
+        PublicMetrics_TEST.useCachedData = true;
         Metric_Result__c mr = new Metric_Result__c(ShortName__c= 'test-test',Result__c='10',Type__c='rowcount',Label__c='test metric');
         insert mr;
         Test.startTest();
@@ -12,6 +13,7 @@
             }
         }
         system.assert(passed);
+        PublicMetrics_TEST.useCachedData = false;
     }
     @isTest public static void test_controller() {
         Metric_Result__c mr = new Metric_Result__c(ShortName__c= 'test-test',Result__c='10',Type__c='rowcount',Label__c='test metric');
