@@ -1,0 +1,16 @@
+<apex:component access="global" controller="PublicMetrics_Component_CTRL">
+  <apex:attribute name="name" access="global"
+                  description="The short-name of the public metric you'd like to display"
+                  required="true"
+                  type="string"
+                  assignTo="{!shortName}"/>
+  <apex:attribute name="format" access="global"
+                  description="A format string to define how the metric should be displayed."
+                  required="false"
+                  default="{0}"
+                  type="string"/>
+  <apex:outputText value="{!format}">
+    <apex:param value="{!VALUE(value)}"/>
+  </apex:outputText>
+
+</apex:component>

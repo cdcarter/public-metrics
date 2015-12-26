@@ -9,6 +9,7 @@
 		<members>PublicMetrics_Schedulable_TEST</members>
 		<members>PublicMetrics_TEST</members>
 		<members>PublicMetrics_Calculate_Action</members>
+		<members>PublicMetrics_Component_CTRL</members>
 		<name>ApexClass</name>
 	</types>
 	<types>
@@ -46,6 +47,10 @@
 		<members>admin</members>
 		<members>bootstrap</members>
 		<name>StaticResource</name>
+	</types>
+	<types>
+		<members>displayMetric</members>
+		<name>ApexComponent</name>
 	</types>
 	<version>35.0</version>
 </Package>
