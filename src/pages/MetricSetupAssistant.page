@@ -1,4 +1,4 @@
-<apex:page showHeader="true" sidebar="true" standardController="Report" extensions="SETUP_Assistant_CTRL" deferLastCommandUntilReady="true" setup="true">
+<apex:page showHeader="true" sidebar="true" title="Metric Setup Assistant" standardController="Report" extensions="SETUP_Assistant_CTRL" deferLastCommandUntilReady="true" setup="true">
 	<!-- reference fields needed by ctrl extension  -->
 	<apex:outputField rendered="false" value="{!Report.Id}"/>
 	<apex:outputField rendered="false" value="{!Report.Name}"/>
@@ -6,6 +6,14 @@
 
 	<apex:form>
 	<apex:sectionHeader title="Public Metrics" subtitle="Metric Setup Assistant"/>
+	<apex:outputPanel layout="block" styleClass="bPageTitle" style="padding-top: 0;">
+		<apex:outputPanel styleClass="ptBreadcrumb" layout="block">
+			&nbsp;«&nbsp;
+			<apex:outputLink  value="{!URLFOR($Page.MetricSetupReportSelect)}">
+				Back to List: Reports
+			</apex:outputLink>
+		</apex:outputPanel>
+	</apex:outputPanel>
 	<apex:pageBlock title="{!Report.Name}" helpTitle="Learn more" helpURL="http://google.com">
 		<apex:pageBlockSection title="Report Details" id="reportdetails" collapsible="false" columns="1">
 			<apex:outputField value="{!Report.DeveloperName}"/>

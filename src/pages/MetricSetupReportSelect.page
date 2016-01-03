@@ -1,0 +1,13 @@
+<apex:page title="Metric Setup Assistant" showHeader="true" sidebar="true" controller="SETUP_SelectReport_CTRL" deferLastCommandUntilReady="true" setup="true">
+	<apex:sectionHeader title="Public Metrics" subtitle="Metric Setup Assistant"/>
+	<apex:pageBlock title="Select a Report" helpTitle="Learn more" helpURL="http://google.com">
+		<apex:pageBlockTable value="{!reports}" var="report">
+			<apex:column headerValue="Report Name">
+				<apex:outputLink value="{!URLFOR($Page.MetricSetupAssistant,null,[id=report.Id])}">
+					{!report.Name}
+				</apex:outputLink>
+			</apex:column>
+			<apex:column value="{!report.DeveloperName}" headerValue="Report Developer Name"/>
+		</apex:pageBlockTable>
+	</apex:pageBlock>
+</apex:page>
