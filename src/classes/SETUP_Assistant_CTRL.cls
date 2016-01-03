@@ -20,7 +20,6 @@ public with sharing class SETUP_Assistant_CTRL {
 			Public_Metrics__mdt mdt = [SELECT Id,Report__c,Type__c,Unit__c,ShortName__c,MasterLabel,DeveloperName FROM Public_Metrics__mdt WHERE Id =: metricId LIMIT 1];
 			this.metricDef = new MetricDefinition(mdt);
 			this.Report = [SELECT Id,Name,DeveloperName,Description FROM Report WHERE Id =:this.metricDef.reportId];
-
 			initializeReportValues();
 		}
 
@@ -28,6 +27,7 @@ public with sharing class SETUP_Assistant_CTRL {
 			this.Report = [SELECT Id,Name,DeveloperName,Description FROM Report WHERE Id =:reportId];
 			this.metricDef = new MetricDefinition(this.Report);
 			initializeReportValues();
+			this.metricDef.type = this.aggregateColumns[this.aggregateColumns.size()-1].name;
 		}
 
 		public String getSiteUrl(){
