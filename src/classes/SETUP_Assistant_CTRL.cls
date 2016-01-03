@@ -2,14 +2,17 @@ public with sharing class SETUP_Assistant_CTRL {
 		transient public Report Report {get; private set;}
 		public MetricDefinition metricDef {get; private set;}
 		transient public List<AggregateResult> aggregateColumns {get; private set;}
+		public boolean isUpdate {get;set;}
 
     public SETUP_Assistant_CTRL() {
 				String reportId = ApexPages.currentPage().getParameters().get('reportId');
 				String metricId = ApexPages.currentPage().getParameters().get('metricId');
 				if(reportId != null) {
 					initializeForReport(reportId);
+					this.isUpdate = false;
 				} else if(metricId != null) {
 					initializeForMetric(metricId);
+					this.isUpdate = true;
 				}
     }
 
@@ -52,7 +55,18 @@ public with sharing class SETUP_Assistant_CTRL {
 			// turn MetricDefinition into a Public_Metrics__mdt
 			// get that mdt and Metric_Result__c
 			// redirect to a view metric page
-			return null;
+			MetadataService.MetadataPort service = CustomMetadataService.createService();
+			List<MetadataService.SaveResult> results;
+			system.debug(metricDef.toCustomMetadata());
+			if(this.isUpdate) {
+				results = service.updateMetadata(new List<MetadataService.CustomMetadata> {metricDef.toCustomMetadata()});
+			}else {
+				results = service.createMetadata(new List<MetadataService.CustomMetadata> {metricDef.toCustomMetadata()});
+			}
+			system.debug(results);
+			CustomMetadataService.handleSaveResults(results[0]);
+			PageReference pr = new PageReference('/'+ Public_Metrics__mdt.sobjecttype.getDescribe().keyPrefix);
+			return pr;
 		}
 
 		public class MetricDefinition {
@@ -80,6 +94,41 @@ public with sharing class SETUP_Assistant_CTRL {
 				this.reportId = tmp.Id;
 				this.reportFullName = tmp.Name;
 			}
+
+			//creates an MDT out of this wrapper
+			private MetadataService.CustomMetadata toCustomMetadata() {
+				// validate the inputs
+				if(String.isBlank(this.masterLabel)
+				|| String.isBlank(this.developerName)
+				|| String.isBlank(this.shortname)
+				|| String.isBlank(this.unit)
+				|| String.isBlank(this.type)
+				|| String.isBlank(this.report)) {
+					throw new PublicMetrics.MetricValidationException('missing data');
+				}
+				MetadataService.CustomMetadata cm = new MetadataService.CustomMetadata();
+				cm.values = new List<MetadataService.CustomMetadataValue>();
+				cm.fullName = 'Public_Metrics.' + this.developerName;
+				cm.label = this.masterLabel;
+				// fix this repetition PLEASE
+				MetadataService.CustomMetadataValue shortname = new MetadataService.CustomMetadataValue();
+				shortname.field = 'ShortName__c';
+				shortname.value = this.shortname;
+				cm.values.add(shortname);
+				MetadataService.CustomMetadataValue unit = new MetadataService.CustomMetadataValue();
+				unit.field = 'Unit__c';
+				unit.value = this.unit;
+				cm.values.add(unit);
+				MetadataService.CustomMetadataValue type = new MetadataService.CustomMetadataValue();
+				type.field = 'Type__c';
+				type.value = this.type;
+				cm.values.add(type);
+				MetadataService.CustomMetadataValue report = new MetadataService.CustomMetadataValue();
+				report.field = 'Report__c';
+				report.value = this.report;
+				cm.values.add(report);
+				return cm;
+			}
 		}
 
 		public class AggregateResult {
@@ -92,4 +141,6 @@ public with sharing class SETUP_Assistant_CTRL {
 				this.value = sumVal.getLabel();
 			}
 		}
+
+
 }

@@ -102,7 +102,7 @@ public class CustomMetadataService {
 	/**
 	 * Connect to the Metadata API
 	 **/
-	private static MetadataService.MetadataPort createService()
+	public static MetadataService.MetadataPort createService()
 	{
 		MetadataService.MetadataPort service = new MetadataService.MetadataPort();
 		service.SessionHeader = new MetadataService.SessionHeader_element();
@@ -113,7 +113,7 @@ public class CustomMetadataService {
 	/**
 	 * Example helper method to interpret a SaveResult, throws an exception if errors are found
 	 **/
-	private static void handleSaveResults(MetadataService.SaveResult saveResult)
+	public static void handleSaveResults(MetadataService.SaveResult saveResult)
 	{
 		// Nothing to see?
 		if(saveResult==null || saveResult.success)

@@ -62,7 +62,7 @@
 		</apex:pageBlockSection>
 
 		<apex:pageBlockButtons location="bottom">
-			<apex:commandButton value="Save Metric"/>
+			<apex:commandButton value="Save Metric" action="{!save}"/>
 		</apex:pageBlockButtons>
 	</apex:pageBlock>
 	<apex:inputHidden value="{!metricDef.type}" id="AggName" />

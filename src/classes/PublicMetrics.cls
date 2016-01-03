@@ -121,4 +121,5 @@ public with sharing class PublicMetrics {
 
 	public class MetricReportException extends Exception {}
 	public class MetricNotFoundException extends Exception {}
+	public class MetricValidationException extends Exception {}
 }
