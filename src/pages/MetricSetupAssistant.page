@@ -1,16 +1,18 @@
-<apex:page showHeader="true" sidebar="true" title="Metric Setup Assistant" standardController="Report" extensions="SETUP_Assistant_CTRL" deferLastCommandUntilReady="true" setup="true">
-	<!-- reference fields needed by ctrl extension  -->
-	<apex:outputField rendered="false" value="{!Report.Id}"/>
-	<apex:outputField rendered="false" value="{!Report.Name}"/>
-	<apex:outputField rendered="false" value="{!Report.DeveloperName}"/>
-
+<apex:page showHeader="true" sidebar="true" title="Metric Setup Assistant" controller="SETUP_Assistant_CTRL" deferLastCommandUntilReady="true" setup="true">
 	<apex:form>
 	<apex:sectionHeader title="Public Metrics" subtitle="Metric Setup Assistant"/>
 	<apex:outputPanel layout="block" styleClass="bPageTitle" style="padding-top: 0;">
-		<apex:outputPanel styleClass="ptBreadcrumb" layout="block">
+		<apex:outputPanel styleClass="ptBreadcrumb" layout="block" rendered="{!NOT(ISBLANK($CurrentPage.Parameters.reportId))}">
 			&nbsp;«&nbsp;
 			<apex:outputLink  value="{!URLFOR($Page.MetricSetupReportSelect)}">
 				Back to List: Reports
+			</apex:outputLink>
+		</apex:outputPanel>
+
+		<apex:outputPanel styleClass="ptBreadcrumb" layout="block" rendered="{!NOT(ISBLANK($CurrentPage.Parameters.metricId))}">
+			&nbsp;«&nbsp;
+			<apex:outputLink  value="/{!$ObjectType.Public_Metrics__mdt.keyPrefix}">
+				Back to List: Public Metrics
 			</apex:outputLink>
 		</apex:outputPanel>
 	</apex:outputPanel>
@@ -28,7 +30,7 @@
 				<apex:column value="{!agg.Name}" headerValue="Aggregate Name"/>
 				<apex:column value="{!agg.value}" headerValue="Current Value"/>
 				<apex:column headerValue="Select">
-						<input type="radio" name="selectedAgg" value="{!agg.Name}" onclick="changeValue(this,'{!$Component.AggName}');"/>
+						<input type="radio" name="selectedAgg" value="{!agg.Name}" checked="{!agg.name == metricDef.type}" onclick="changeValue(this,'{!$Component.AggName}');"/>
 				</apex:column>
 			</apex:pageBlockTable>
 		</apex:pageBlockSection>
@@ -41,6 +43,14 @@
 			<apex:pageBlockSectionItem helpText="{!$ObjectType.Public_Metrics__mdt.Fields.Unit__c.inlineHelpText}">
 				<apex:outputLabel value="{!$ObjectType.Public_Metrics__mdt.Fields.Unit__c.Label}"/>
 				<apex:inputText value="{!metricDef.unit}"/>
+			</apex:pageBlockSectionItem>
+			<apex:pageBlockSectionItem helpText="{!$ObjectType.Public_Metrics__mdt.Fields.MasterLabel.inlineHelpText}">
+				<apex:outputLabel value="{!$ObjectType.Public_Metrics__mdt.Fields.MasterLabel.Label}"/>
+				<apex:inputText value="{!metricDef.masterLabel}"/>
+			</apex:pageBlockSectionItem>
+			<apex:pageBlockSectionItem helpText="{!$ObjectType.Public_Metrics__mdt.Fields.DeveloperName.inlineHelpText}">
+				<apex:outputLabel value="{!$ObjectType.Public_Metrics__mdt.Fields.DeveloperName.Label}"/>
+				<apex:inputText value="{!metricDef.developerName}"/>
 			</apex:pageBlockSectionItem>
 		</apex:pageBlockSection>
 

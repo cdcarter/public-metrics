@@ -1,20 +1,42 @@
 public with sharing class SETUP_Assistant_CTRL {
-		private final Report sourceReport;
+		transient public Report Report {get; private set;}
 		public MetricDefinition metricDef {get; private set;}
 		transient public List<AggregateResult> aggregateColumns {get; private set;}
 
-    public SETUP_Assistant_CTRL(ApexPages.StandardController stdController) {
-        this.sourceReport = (Report)stdController.getRecord();
-				this.metricDef = new MetricDefinition(this.sourceReport);
-				Reports.ReportResults reportResults = Reports.ReportManager.runReport(sourceReport.Id, true);
-				Reports.ReportFact fact = reportResults.getFactMap().get('T!T');
-				List<Reports.SummaryValue> aggregates = fact.getAggregates();
-				List<Reports.AggregateColumn> cols = reportResults.getReportExtendedMetadata().getAggregateColumnInfo().values();
-				this.aggregateColumns = new List<AggregateResult>();
-				for (Integer i = 0, cnt = cols.size(); i < cnt; i++) {
-						this.aggregateColumns.add(new AggregateResult(cols[i],aggregates[i]));
+    public SETUP_Assistant_CTRL() {
+				String reportId = ApexPages.currentPage().getParameters().get('reportId');
+				String metricId = ApexPages.currentPage().getParameters().get('metricId');
+				if(reportId != null) {
+					initializeForReport(reportId);
+				} else if(metricId != null) {
+					initializeForMetric(metricId);
 				}
     }
+
+		public void initializeForMetric(String metricId) {
+			Public_Metrics__mdt mdt = [SELECT Id,Report__c,Type__c,Unit__c,ShortName__c,MasterLabel,DeveloperName FROM Public_Metrics__mdt WHERE Id =: metricId LIMIT 1];
+			this.metricDef = new MetricDefinition(mdt);
+			this.Report = [SELECT Id,Name,DeveloperName,Description FROM Report WHERE Id =:this.metricDef.reportId];
+
+			initializeReportValues();
+		}
+
+		public void initializeForReport(String reportId) {
+			this.Report = [SELECT Id,Name,DeveloperName,Description FROM Report WHERE Id =:reportId];
+			this.metricDef = new MetricDefinition(this.Report);
+			initializeReportValues();
+		}
+
+		public void initializeReportValues() {
+			Reports.ReportResults reportResults = Reports.ReportManager.runReport(Report.Id, true);
+			Reports.ReportFact fact = reportResults.getFactMap().get('T!T');
+			List<Reports.SummaryValue> aggregates = fact.getAggregates();
+			List<Reports.AggregateColumn> cols = reportResults.getReportExtendedMetadata().getAggregateColumnInfo().values();
+			this.aggregateColumns = new List<AggregateResult>();
+			for (Integer i = 0, cnt = cols.size(); i < cnt; i++) {
+					this.aggregateColumns.add(new AggregateResult(cols[i],aggregates[i]));
+			}
+		}
 
 		public PageReference save() {
 			// turn MetricDefinition into a Public_Metrics__mdt
@@ -30,10 +52,23 @@ public with sharing class SETUP_Assistant_CTRL {
 			public String type {get; set;}
 			public String shortName {get; set;}
 			public String unit {get; set;}
+			public String masterLabel {get; set;}
+			public String developerName {get; set;}
 			public MetricDefinition(Report sourceReport) {
 				this.reportId = sourceReport.Id;
 				this.report = sourceReport.DeveloperName;
 				this.reportFullName = sourceReport.Name;
+			}
+			public MetricDefinition(Public_Metrics__mdt mdt) {
+				this.report = mdt.Report__c;
+				this.type = mdt.Type__c;
+				this.shortName = mdt.ShortName__c;
+				this.unit = mdt.Unit__c;
+				this.masterLabel = mdt.MasterLabel;
+				this.developerName = mdt.DeveloperName;
+				Report tmp = [SELECT Id,Name FROM Report WHERE DeveloperName=:this.report LIMIT 1];
+				this.reportId = tmp.Id;
+				this.reportFullName = tmp.Name;
 			}
 		}
 
