@@ -1,0 +1,52 @@
+<apex:page showHeader="true" sidebar="true" standardController="Report" extensions="SETUP_Assistant_CTRL" deferLastCommandUntilReady="true" setup="true">
+	<!-- reference fields needed by ctrl extension  -->
+	<apex:outputField rendered="false" value="{!Report.Id}"/>
+	<apex:outputField rendered="false" value="{!Report.Name}"/>
+	<apex:outputField rendered="false" value="{!Report.DeveloperName}"/>
+
+	<apex:form>
+	<apex:sectionHeader title="Public Metrics" subtitle="Metric Setup Assistant"/>
+	<apex:pageBlock title="{!Report.Name}" helpTitle="Learn more" helpURL="http://google.com">
+		<apex:pageBlockSection title="Report Details" id="reportdetails" collapsible="false" columns="1">
+			<apex:outputField value="{!Report.DeveloperName}"/>
+			<apex:outputField value="{!Report.Description}"/>
+			<apex:pageBlockSectionItem>
+				<apex:outputText value=""/>
+				<apex:outputLink value="/{!Report.Id}">Run Report</apex:outputLink>
+			</apex:pageBlockSectionItem>
+
+			<apex:pageBlockTable value="{!aggregateColumns}" var="agg" >
+				<apex:column value="{!agg.Label}" headerValue="Aggregate Label"/>
+				<apex:column value="{!agg.Name}" headerValue="Aggregate Name"/>
+				<apex:column value="{!agg.value}" headerValue="Current Value"/>
+				<apex:column headerValue="Select">
+						<input type="radio" name="selectedAgg" value="{!agg.Name}" onclick="changeValue(this,'{!$Component.AggName}');"/>
+				</apex:column>
+			</apex:pageBlockTable>
+		</apex:pageBlockSection>
+
+		<apex:pageBlockSection title="Metric Details" id="metricdetails" collapsible="false" columns="1">
+			<apex:pageBlockSectionItem helpText="{!$ObjectType.Public_Metrics__mdt.Fields.ShortName__c.inlineHelpText}">
+				<apex:outputLabel value="{!$ObjectType.Public_Metrics__mdt.Fields.ShortName__c.Label}"/>
+				<apex:inputText value="{!metricDef.shortName}"/>
+			</apex:pageBlockSectionItem >
+			<apex:pageBlockSectionItem helpText="{!$ObjectType.Public_Metrics__mdt.Fields.Unit__c.inlineHelpText}">
+				<apex:outputLabel value="{!$ObjectType.Public_Metrics__mdt.Fields.Unit__c.Label}"/>
+				<apex:inputText value="{!metricDef.unit}"/>
+			</apex:pageBlockSectionItem>
+		</apex:pageBlockSection>
+
+		<apex:pageBlockButtons location="bottom">
+			<apex:commandButton value="Save Metric"/>
+		</apex:pageBlockButtons>
+	</apex:pageBlock>
+	<apex:inputHidden value="{!metricDef.type}" id="AggName" />
+	</apex:form>
+
+<script>
+function changeValue(input, textid) {
+    document.getElementById(textid).value = input.value;
+		console.log('set '+textid+' to '+input.value);
+}
+</script>
+</apex:page>

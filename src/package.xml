@@ -10,11 +10,13 @@
 		<members>PublicMetrics_TEST</members>
 		<members>PublicMetrics_Calculate_Action</members>
 		<members>PublicMetrics_Component_CTRL</members>
+		<members>SETUP_Assistant_CTRL</members>
 		<name>ApexClass</name>
 	</types>
 	<types>
 		<members>PublicMetrics</members>
 		<members>PublicMetricsDashboard</members>
+		<members>MetricSetupAssistant</members>
 		<name>ApexPage</name>
 	</types>
 	<types>
