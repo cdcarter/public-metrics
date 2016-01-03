@@ -12,6 +12,10 @@
 		<members>PublicMetrics_Component_CTRL</members>
 		<members>SETUP_Assistant_CTRL</members>
 		<members>SETUP_SelectReport_CTRL</members>
+		<members>MetadataService</members>
+		<members>MetadataServiceTest</members>
+		<members>CustomMetadataService</members>
+		<members>CustomMetadataServiceTest</members>
 		<name>ApexClass</name>
 	</types>
 	<types>

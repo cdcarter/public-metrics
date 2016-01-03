@@ -22,7 +22,7 @@
 			<apex:outputField value="{!Report.Description}"/>
 			<apex:pageBlockSectionItem>
 				<apex:outputText value=""/>
-				<apex:outputLink value="/{!Report.Id}">Run Report</apex:outputLink>
+				<apex:outputLink value="/{!Report.Id}">Preview Report</apex:outputLink>
 			</apex:pageBlockSectionItem>
 
 			<apex:pageBlockTable value="{!aggregateColumns}" var="agg" >
