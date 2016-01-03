@@ -54,6 +54,13 @@
 			</apex:pageBlockSectionItem>
 		</apex:pageBlockSection>
 
+		<apex:pageBlockSection rendered="{!NOT(ISBLANK($CurrentPage.Parameters.metricId))}" title="Public Access" collapsible="false" columns="1">
+			<apex:pageBlockSectionItem helpText="The public URI to retrieve this metric.">
+				<apex:outputLabel>API Link</apex:outputLabel>
+				<apex:outputLink value="{!SiteUrl}/services/apexrest/metrics/{!metricDef.shortName}">{!SiteUrl}/services/apexrest/metrics/{!metricDef.shortName}</apex:outputLink>
+			</apex:pageBlockSectionItem>
+		</apex:pageBlockSection>
+
 		<apex:pageBlockButtons location="bottom">
 			<apex:commandButton value="Save Metric"/>
 		</apex:pageBlockButtons>

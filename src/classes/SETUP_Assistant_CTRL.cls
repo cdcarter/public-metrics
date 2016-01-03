@@ -27,6 +27,16 @@ public with sharing class SETUP_Assistant_CTRL {
 			initializeReportValues();
 		}
 
+		public String getSiteUrl(){
+			Site site = [SELECT GuestUserId FROM Site WHERE Name = 'Public_Metrics'];
+			String path = '/sites/servlet.SiteDebugMode';
+			PageReference pr = new PageReference(path);
+			pr.getParameters().put('guid', site.GuestUserId);
+			pr.getParameters().put('sitedebugmode', 'x');
+			String url = pr.getContent().toString().substringAfter('URL=').substringBefore(path);
+			return url;
+		}
+
 		public void initializeReportValues() {
 			Reports.ReportResults reportResults = Reports.ReportManager.runReport(Report.Id, true);
 			Reports.ReportFact fact = reportResults.getFactMap().get('T!T');
